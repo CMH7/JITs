@@ -1,0 +1,35 @@
+﻿@page "/"
+@page "/login"
+
+@layout BaseLayout
+
+<RadzenStack JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center" Style="width: 100vw; height: 100vh;">
+    <RadzenImage Path="/tempLogo.png" Style="width: 100px; height: auto;" />
+    <RadzenText Text="Just In Time" TextStyle="TextStyle.DisplayH3" class="mb-0" />
+    <RadzenText Text="Timely attendance and records" TextStyle="TextStyle.Caption" class="mb-5" />
+
+    <RadzenCard Style="width: 60vw">
+        <ChildContent>
+            <RadzenTemplateForm TItem="Credential" Data="Creds" Submit="@Submit">
+                <RadzenStack JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center">
+
+                    <RadzenStack Gap="0" class="w-100">
+                        <RadzenFormField Text="LRN/Email">
+                            <RadzenTextBox @bind-Value=@Creds.EmailOrLRN Disabled=appState.IsBusy Name="jits-rtb-emailorlrn" class="w-100" />
+                        </RadzenFormField>
+                        <RadzenRequiredValidator Component="jits-rtb-emailorlrn" Text="Required" />
+                    </RadzenStack>
+        
+                    <RadzenStack Gap="0" class="w-100">
+                        <RadzenFormField Text="Password">
+                            <RadzenPassword @bind-Value=@Creds.Password Disabled=appState.IsBusy Name="jits-rp-password" class="w-100" />
+                        </RadzenFormField>
+                        <RadzenRequiredValidator Component="jits-rp-password" Text="Required" />
+                    </RadzenStack>
+
+                    <RadzenButton ButtonType="ButtonType.Submit" Text="Login" IsBusy=@appState.IsBusy class="w-100 mt-3" />
+                </RadzenStack>
+            </RadzenTemplateForm>
+        </ChildContent>
+    </RadzenCard>
+</RadzenStack>
