@@ -1,4 +1,4 @@
-﻿namespace JITs.Entities;
+﻿namespace JITs.Models;
 
 public class Auditable
 {
@@ -6,6 +6,8 @@ public class Auditable
     public DateTime CreatedDate { get; set; }
     public UserHeader LastModifiedBy { get; set; }
     public DateTime LastModifiedDate { get; set; }
+
+    public Auditable() { }
 
     public Auditable(UserHeader userHeader, bool update)
     {

@@ -1,4 +1,4 @@
-﻿using JITs.Entities;
+﻿using JITs.Models;
 
 namespace JITs;
 

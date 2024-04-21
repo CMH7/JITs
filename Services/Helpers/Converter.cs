@@ -17,6 +17,11 @@ public static class Converter
                 value = GetObject((Dictionary<string, object>)value, prop.PropertyType); // <= This line
             }
 
+            if (prop.PropertyType.Name == "DateTime")
+            {
+                Timestamp ts = (Timestamp)value;
+                value = ts.ToDateTime();
+            }
             if (prop.PropertyType.Name == "Int32") value = Convert.ToInt32(value);
             prop.SetValue(obj, value, null);
         }

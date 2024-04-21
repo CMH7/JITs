@@ -1,0 +1,120 @@
+﻿@page "/signup"
+
+@layout BaseLayout
+<RadzenStack JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center" Style="width: 100vw; height: 100vh;">
+    <RadzenImage Path="/tempLogo.png" Style="width: 100px; height: auto;" />
+    <RadzenText Text="Just In Time" TextStyle="TextStyle.DisplayH3" class="mb-0" />
+    <RadzenText Text="Timely attendance and records" TextStyle="TextStyle.Caption" class="mb-5" />
+
+    <RadzenCard Style="width: 60vw">
+        <ChildContent>
+            <RadzenTemplateForm TItem="User" Data="NewUser" Submit="@Submit">
+                <RadzenSteps Change=@OnChange>
+                    <Steps>
+                        <RadzenStepsItem Disabled=@appState.IsBusy>
+                            <RadzenText Text="Personal" TextStyle="TextStyle.Subtitle2" />
+                            
+                            <RadzenStack JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center">
+                                <RadzenStack Gap="0" class="w-100">
+                                    <RadzenFormField Text="First name">
+                                        <RadzenTextBox @bind-Value=@NewUser.Name.First Disabled=@appState.IsBusy Name="jits-rtb-fname" class="w-100" />
+                                    </RadzenFormField>
+                                    <RadzenRequiredValidator Component="jits-rtb-fname" Text="Required" />
+                                </RadzenStack>
+                    
+                                <RadzenStack Gap="0" class="w-100">
+                                    <RadzenFormField Text="Middle name">
+                                        <RadzenTextBox @bind-Value=@NewUser.Name.Middle Disabled=@appState.IsBusy Name="jits-rtb-mname" class="w-100" />
+                                    </RadzenFormField>
+                                </RadzenStack>
+                                
+                                <RadzenStack Gap="0" class="w-100">
+                                    <RadzenFormField Text="Last name">
+                                        <RadzenTextBox @bind-Value=@NewUser.Name.Last Disabled=@appState.IsBusy Name="jits-rtb-lname" class="w-100" />
+                                    </RadzenFormField>
+                                    <RadzenRequiredValidator Component="jits-rtb-lname" Text="Required" />
+                                </RadzenStack>
+                                
+                                <RadzenStack Gap="0" class="w-100">
+                                    <RadzenFormField Text="Extension name">
+                                        <RadzenTextBox @bind-Value=@NewUser.Name.Extensions Disabled=@appState.IsBusy Name="jits-rtb-ename" class="w-100" />
+                                    </RadzenFormField>
+                                </RadzenStack>
+                    
+                                <RadzenStack Gap="0" class="w-100">
+                                    <RadzenFormField Text="LRN No.">
+                                        <RadzenTextBox @bind-Value=@NewUser.LRN Disabled=@appState.IsBusy Name="jits-rtb-lrn" class="w-100" />
+                                    </RadzenFormField>
+                                    <RadzenRequiredValidator Component="jits-rtb-lrn" Text="Required" />
+                                    <RadzenRegexValidator Pattern="^\d{12}$" Component="jits-rtb-lrn" Text="Invalid LRN" />
+                                </RadzenStack>
+                    
+                    
+                                <RadzenStack Gap="0" class="w-100">
+                                    <RadzenFormField Text="Sex">
+                                        <RadzenDropDown @bind-Value=@NewUser.Sex TValue="string" Data=@sexes TextProperty="Name" ValueProperty="Value" Disabled=@appState.IsBusy Name="jits-rd-sex" class="w-100" />
+                                    </RadzenFormField>
+                                    <RadzenRequiredValidator Component="jits-rd-sex" Text="Required" />
+                                </RadzenStack>
+                            </RadzenStack>
+                        </RadzenStepsItem>
+            
+                        <RadzenStepsItem Disabled=@appState.IsBusy>
+                            <RadzenText Text="Academic" TextStyle="TextStyle.Subtitle2" />
+
+                            <RadzenStack JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center">
+                                <RadzenStack Gap="0" class="w-100">
+                                    <RadzenFormField Text="Email (Optional)">
+                                        <RadzenTextBox @bind-Value=@NewUser.Email Disabled=@appState.IsBusy Name="jits-rtb-email" class="w-100" />
+                                    </RadzenFormField>
+                                </RadzenStack>
+
+                                <RadzenStack Gap="0" class="w-100">
+                                    <RadzenFormField Text="Grade level">
+                                        <RadzenDropDown @bind-Value=@NewUser.Class.Level TValue="int" Data=@classLevels TextProperty="Level" ValueProperty="Level" Disabled=@appState.IsBusy Name="jits-rd-lvl" class="w-100" />
+                                    </RadzenFormField>
+                                    <RadzenCustomValidator Validator=@(() => NewUser.Class.Level > 0) Component="jits-rd-lvl" Text="Required" />
+                                </RadzenStack>
+                                
+                                <RadzenStack Gap="0" class="w-100">
+                                    <RadzenFormField Text="Section">
+                                        <RadzenDropDown @bind-Value=@NewUser.Class.Section TValue="string" Data=@classSections TextProperty="Section" ValueProperty="Section" Disabled=@(appState.IsBusy || NewUser.Class.Level == 0) Name="jits-rd-sctn" Change="@SectionChanged" class="w-100" />
+                                    </RadzenFormField>
+                                    <RadzenRequiredValidator Component="jits-rd-sctn" Text="Required" />
+                                </RadzenStack>
+                            </RadzenStack>
+                        </RadzenStepsItem>
+            
+                        <RadzenStepsItem Disabled=@appState.IsBusy>
+                            <RadzenStack>
+                                <RadzenStack Gap="0" class="w-100">
+                                    <RadzenFormField Text="Password">
+                                        <RadzenTextBox @bind-Value=@NewUser.Password Disabled=@appState.IsBusy Name="jits-rtb-ps" class="w-100" />
+                                    </RadzenFormField>
+                                    <RadzenRequiredValidator Component="jits-rtb-ps" Text="Required" />
+                                    <RadzenCustomValidator Validator=@(() => ConfirmPassword == NewUser.Password ) Component="jits-rtb-ps" Text="Password do not match" />
+                                </RadzenStack>
+                                
+                                <RadzenStack Gap="0" class="w-100">
+                                    <RadzenFormField Text="Confirm Password">
+                                        <RadzenTextBox @bind-Value=@ConfirmPassword Disabled=@appState.IsBusy Name="jits-rtb-ps2" class="w-100" />
+                                    </RadzenFormField>
+                                    <RadzenRequiredValidator Component="jits-rtb-ps2" Text="Required" />
+                                    <RadzenCustomValidator Validator=@(() => ConfirmPassword == NewUser.Password ) Component="jits-rtb-ps2" Text="Password do not match" />
+                                </RadzenStack>
+
+                                <RadzenText TextStyle="TextStyle.Caption" Text="By clicking 'Accept,' you acknowledge and agree to comply with the terms and conditions governing the use of the JITs application, including its policies and guidelines." class="mt-3" />
+                                <RadzenButton ButtonType="ButtonType.Submit" Text="Accept" IsBusy=@appState.IsBusy class="w-100 mt-5" />
+                            </RadzenStack>
+                        </RadzenStepsItem>
+                    </Steps>
+                </RadzenSteps>
+            </RadzenTemplateForm>
+        </ChildContent>
+    </RadzenCard>
+
+    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center" class="mt-5">
+        <RadzenText Text="Already have an account?" TextStyle="TextStyle.Caption" />
+        <RadzenText Text="Login" TextStyle="TextStyle.Caption" Style="color: var(--rz-primary);" @onclick="@Login" />
+    </RadzenStack>
+</RadzenStack>

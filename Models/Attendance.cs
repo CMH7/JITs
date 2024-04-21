@@ -1,4 +1,4 @@
-﻿namespace JITs.Entities;
+﻿namespace JITs.Models;
 
 public class Attendance
 {

@@ -1,4 +1,5 @@
-﻿@page "/login"
+﻿@page "/"
+@page "/login"
 
 @layout BaseLayout
 
@@ -13,10 +14,11 @@
                 <RadzenStack JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center">
 
                     <RadzenStack Gap="0" class="w-100">
-                        <RadzenFormField Text="LRN/Email">
-                            <RadzenTextBox @bind-Value=@Creds.EmailOrLRN Disabled=appState.IsBusy Name="jits-rtb-emailorlrn" class="w-100" />
+                        <RadzenFormField Text="LRN">
+                            <RadzenTextBox @bind-Value=@Creds.EmailOrLRN Disabled=appState.IsBusy Name="jits-rtb-lrn" class="w-100" />
                         </RadzenFormField>
-                        <RadzenRequiredValidator Component="jits-rtb-emailorlrn" Text="Required" />
+                        <RadzenRequiredValidator Component="jits-rtb-lrn" Text="Required" />
+                        <RadzenRegexValidator Pattern="^\d{12}$" Component="jits-rtb-lrn" Text="Invalid LRN" />
                     </RadzenStack>
         
                     <RadzenStack Gap="0" class="w-100">
@@ -27,8 +29,14 @@
                     </RadzenStack>
 
                     <RadzenButton ButtonType="ButtonType.Submit" Text="Login" IsBusy=@appState.IsBusy class="w-100 mt-3" />
+
                 </RadzenStack>
             </RadzenTemplateForm>
         </ChildContent>
     </RadzenCard>
+
+    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" class="mt-5">
+        <RadzenText Text="Don't have an account?" TextStyle="TextStyle.Caption" />
+        <RadzenText Text="Sign up" TextStyle="TextStyle.Caption" Style="color: var(--rz-primary);" @onclick="@SignUp" />
+    </RadzenStack>
 </RadzenStack>

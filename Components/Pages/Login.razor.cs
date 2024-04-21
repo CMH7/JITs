@@ -1,4 +1,4 @@
-using JITs.Entities;
+using JITs.Models;
 using JITs.Services.DB;
 using JITs.Services.Helpers;
 using Newtonsoft.Json;
@@ -84,6 +84,11 @@ public partial class Login : IAsyncDisposable
             navigationManager.NavigateTo("/home", true, true);
         }
         appState.IsBusy = false;
+    }
+
+    private void SignUp()
+    {
+        navigationManager.NavigateTo("/signup", true, true);
     }
 
     private void Notif(NotificationSeverity Severity, string Summary, string Detail, double Duration = 5000)

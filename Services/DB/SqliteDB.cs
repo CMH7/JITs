@@ -1,4 +1,4 @@
-﻿using JITs.Entities;
+﻿using JITs.Models;
 using SQLite;
 using System.Linq.Expressions;
 
@@ -24,6 +24,7 @@ public class SqliteDB
     public async Task InitTables()
     {
 		await db.CreateTableAsync<SQliteUser>();
+		await db.CreateTableAsync<SQliteClassParent>();
     }
 
     public Task<int> DropTable<T>() where T : class, new()

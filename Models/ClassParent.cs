@@ -1,8 +1,10 @@
-﻿namespace JITs.Entities;
+﻿namespace JITs.Models;
 
 public class ClassParent : Auditable
 {
     public ClassInfo Info { get; set; }
+
+    public ClassParent() : base() { }
 
     public ClassParent(ClassInfo info, UserHeader userHeader, bool update) : base(userHeader, update) => Info = info;
 
@@ -18,4 +20,11 @@ public class ClassInfo
 public class ClassVM : ClassInfo
 {
     public string Id { get; set; }
+
+    public ClassVM() { }
+    public ClassVM(ClassParent classparent)
+    {
+        Level = classparent.Info.Level;
+        Section = classparent.Info.Section;
+    }
 }
