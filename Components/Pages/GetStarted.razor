@@ -1,0 +1,18 @@
+﻿@page "/"
+
+@layout BaseLayout
+
+<RadzenStack AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween" Style="width: 100vw; height: 100vh; padding: 5vh 10px;">
+    <RadzenCard Style="width: 60vw;">
+        <RadzenStack AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
+            <RadzenImage Path="/gs1test.jpg" Style="width: 100%; height: auto;" class="mx-auto" />
+
+            <RadzenText Text="JUST IN TIME" />
+        </RadzenStack>
+    </RadzenCard>
+
+    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween" Style="width: 60vw;">
+        <RadzenButton Icon="arrow_back_ios" Variant="Variant.Text" />
+        <RadzenButton Icon="arrow_forward_ios" Variant="Variant.Text" />
+    </RadzenStack>
+</RadzenStack>

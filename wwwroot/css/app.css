@@ -89,3 +89,18 @@ h1:focus {
 .rz-notification {
     top: 0 !important;
 }
+
+ul.rz-profile-menu .rz-navigation-menu {
+    top: 110% !important;
+    right: 10px !important;
+}
+
+ul.rz-profile-menu .rz-navigation-item-icon-children {
+    display: none !important;
+}
+
+@media (max-width: 768px) {
+    .rz-dialog:not(.rz-dialog-confirm):not(.rz-dialog-alert) {
+        top: auto !important;
+    }
+}

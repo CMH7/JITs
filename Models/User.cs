@@ -12,4 +12,10 @@ public class User
     public ClassVM Class { get; set; }
     public bool Administrator { get; set; }
     public bool SUP { get; set; }
+
+    public User()
+    {
+        Name = new();
+        Class = new();
+    }
 }

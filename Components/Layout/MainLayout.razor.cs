@@ -4,6 +4,7 @@ namespace JITs.Components.Layout;
 public partial class MainLayout : IAsyncDisposable
 {
     [Inject] private AppState appState { get; set; }
+    [Inject] private NavigationManager navigationManager { get; set; }
 
     protected override void OnInitialized()
     {
@@ -14,6 +15,7 @@ public partial class MainLayout : IAsyncDisposable
     private void setup()
     {
         appState ??= new();
+        appState.CurrentUser ??= new();
         appState.stateHasChanged += StateHasChanged;
     }
 
@@ -24,4 +26,13 @@ public partial class MainLayout : IAsyncDisposable
     }
 
     bool sidebarExpanded = false;
+
+    private async Task Logout()
+    {
+        appState.IsBusy = true;
+        await App.Db.DeleteAllAsync<SQliteUser>();
+        appState.CurrentUser = new();
+        appState.IsBusy = false;
+        navigationManager.NavigateTo("/login");
+    }
 }

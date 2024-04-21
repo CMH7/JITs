@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using JITs.Services.DB;
+using Microsoft.Extensions.Logging;
 
 namespace JITs;
 
@@ -22,11 +23,12 @@ public static class MauiProgram
 
         builder.Services.AddRadzenComponents();
 
+        builder.Services.AddScoped<IFDb, FDb>();
         builder.Services.AddScoped<AppState>();
 
 #if DEBUG
         builder.Services.AddBlazorWebViewDeveloperTools();
-		builder.Logging.AddDebug();
+        builder.Logging.AddDebug();
 #endif
 
         return builder.Build();

@@ -1,4 +1,6 @@
-﻿namespace JITs;
+﻿using JITs.Entities;
+
+namespace JITs;
 
 public class AppState
 {
@@ -17,4 +19,6 @@ public class AppState
     }
 
     public string CurrentPage { get; set; } = "Home (QR Code)";
+
+    public User CurrentUser { get; set; }
 }

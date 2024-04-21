@@ -6,9 +6,42 @@
 
 <RadzenLayout style="position: relative;grid-template-areas: 'rz-sidebar rz-header' 'rz-sidebar rz-body'">
     <RadzenHeader>
-        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0">
-            <RadzenSidebarToggle Click="@(() => sidebarExpanded = !sidebarExpanded)" />
-            <RadzenLabel Text="@appState.CurrentPage" />
+        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center" Gap="0">
+            <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0">   
+                <RadzenSidebarToggle Click="@(() => sidebarExpanded = !sidebarExpanded)" />
+                <RadzenLabel Text="@appState.CurrentPage" />
+            </RadzenStack>
+
+            @if (appState.IsBusy)
+            {
+                <div style="padding: var(--rz-profile-menu-padding);">
+                    <div style="position: relative">
+                        <RadzenGravatar Visible=@(!string.IsNullOrEmpty(appState.CurrentUser.Picture)) Email="@appState.CurrentUser.Picture" />
+                        <RadzenGravatar Visible=@(string.IsNullOrEmpty(appState.CurrentUser.Picture)) Email="charlesm.herrera0700@gmail.com" />
+                    </div>
+                </div>
+            }
+
+            <RadzenProfileMenu Visible=@(!appState.IsBusy)>
+                <Template>
+                    <RadzenGravatar Visible=@(!string.IsNullOrEmpty(appState.CurrentUser.Picture)) Email="@appState.CurrentUser.Picture" />
+                    <RadzenGravatar Visible=@(string.IsNullOrEmpty(appState.CurrentUser.Picture)) Email="charlesm.herrera0700@gmail.com" />
+                </Template>
+                <ChildContent>
+                    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Style="width: fit-content; padding: var(--rz-menu-item-padding) !important;">
+                        <RadzenGravatar Visible=@(!string.IsNullOrEmpty(appState.CurrentUser.Picture)) Style="border: 1px solid #e2e0df" Email="@appState.CurrentUser.Picture" />
+                        <RadzenGravatar Visible=@(string.IsNullOrEmpty(appState.CurrentUser.Picture)) Style="border: 1px solid #e2e0df" Email="charlesm.herrera0700@gmail.com" />
+                        <RadzenStack Gap="0" Style="margin-left: .45rem">
+                            <RadzenText Text="@appState.CurrentUser.Name.Full" TextStyle="TextStyle.Body2" class="m-0 fw-bold" />
+                            <RadzenText Text="@(string.Format("{0}-{1}", appState.CurrentUser.Class.Level, appState.CurrentUser.Class.Section))" TextStyle="TextStyle.Caption" class="m-0" />
+                        </RadzenStack>
+                    </RadzenStack>
+                    <RadzenStack JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center" Style="padding: var(--rz-menu-item-padding) !important;" Gap="0">
+                        <RadzenButton Text="Logout" Icon="logout" Size="ButtonSize.Small" Variant="Variant.Filled" Click="@Logout" ButtonStyle="ButtonStyle.Danger" class="w-100" />
+                    </RadzenStack>
+                </ChildContent>
+            </RadzenProfileMenu>
+
         </RadzenStack>
     </RadzenHeader>
     <RadzenSidebar Responsive="false" @bind-Expanded="@sidebarExpanded" style="position: absolute; z-index: 3">

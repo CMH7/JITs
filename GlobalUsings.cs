@@ -5,3 +5,4 @@ global using JITs.Components.Layout;
 global using Microsoft.AspNetCore.Components;
 global using JITs.Models;
 global using JITs.Providers;
+global using Google.Cloud.Firestore;
