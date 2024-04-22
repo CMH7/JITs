@@ -46,6 +46,11 @@
     </ItemGroup>
 
     <ItemGroup>
+      <MauiAsset Include="jits-f801f-firebase-adminsdk-p7fj2-cee723cdf0.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="BCrypt.Net-Core" Version="1.6.0" />
         <PackageReference Include="Google.Cloud.Firestore" Version="3.6.0" />
         <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.20" />
         <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.20" />
@@ -55,6 +60,15 @@
         <PackageReference Include="Radzen.Blazor" Version="4.29.8" />
         <PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
         <PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.8" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Update="jits-f801f-firebase-adminsdk-p7fj2-cee723cdf0.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Update="wwwroot\jits-f801f-firebase-adminsdk-p7fj2-cee723cdf0.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
 </Project>

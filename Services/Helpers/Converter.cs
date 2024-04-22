@@ -48,6 +48,8 @@ public static class Converter
         userdatades["Name"] = usernamedes;
         userdatades["Class"] = userclassdes;
 
+        userdatades.Remove("DocId");
+
         return userdatades;
     }
 }

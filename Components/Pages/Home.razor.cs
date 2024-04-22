@@ -1,6 +1,6 @@
-using JITs.Models;
+using BCrypt.Net;
+using Microsoft.JSInterop;
 using Newtonsoft.Json;
-using Radzen;
 
 namespace JITs.Components.Pages;
 
@@ -8,6 +8,7 @@ public partial class Home : IAsyncDisposable
 {
     [Inject] private AppState appState { get; set; }
     [Inject] private NotificationService notificationService { get; set; }
+    [Inject] private IJSRuntime jSRuntime { get; set; }
 
     protected override void OnInitialized()
     {
@@ -18,8 +19,14 @@ public partial class Home : IAsyncDisposable
     protected override async Task OnInitializedAsync()
     {
         bool hasUser = await HasUser();
-        if (hasUser) Notif(NotificationSeverity.Success ,"Welcome back", $"{appState.CurrentUser.Name.Full}");
+        if (hasUser) Notif(NotificationSeverity.Success, "Welcome back", $"{appState.CurrentUser.Name.Full}");
         await base.OnInitializedAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(firstRender) await InitializeQRCode(); 
+        await base.OnAfterRenderAsync(firstRender);
     }
 
     private void setup()
@@ -28,6 +35,12 @@ public partial class Home : IAsyncDisposable
         appState.CurrentPage = "Home (QR Code)";
         appState.CurrentUser = new();
         appState.stateHasChanged += StateHasChanged;
+    }
+
+    private async Task InitializeQRCode()
+    {
+        string hashedLRN = BCrypt.Net.BCrypt.HashString(appState.CurrentUser.LRN, SaltRevision.Revision2Y);
+        await jSRuntime.InvokeVoidAsync("GenerateQRCode", "qrcode", hashedLRN);
     }
 
     public ValueTask DisposeAsync()

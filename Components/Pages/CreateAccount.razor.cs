@@ -86,13 +86,8 @@ public partial class CreateAccount
 
             CollectionReference UsersColRef = db.GetCollectionReference("Users");
             DocumentReference docRef = UsersColRef.Document();
-            string usernamejson = JsonConvert.SerializeObject(NewUser.Name);
-            string userclassjson = JsonConvert.SerializeObject(NewUser.Class);
-            string json = JsonConvert.SerializeObject(NewUser);
-            Dictionary<string, object> kv = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
-            if(!kv.Remove("DocId")) Notif(NotificationSeverity.Warning, "Warning", "DocId was not removed");
-            kv["Name"] = JsonConvert.DeserializeObject<Dictionary<string, object>>(usernamejson);
-            kv["Class"] = JsonConvert.DeserializeObject<Dictionary<string, object>>(userclassjson);
+            Dictionary<string, object> kv = Converter.UserToDict(NewUser);
+            if(kv.Keys.Contains("DocId")) Notif(NotificationSeverity.Warning, "Warning", "DocId was not removed");
             WriteResult res = await docRef.SetAsync(kv);
             //DocumentReference UserDocRef = await UsersColRef.AddAsync(NewUser);
 
