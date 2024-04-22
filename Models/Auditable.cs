@@ -2,9 +2,16 @@
 
 public class Auditable
 {
+    [FirestoreProperty]
     public UserHeader CreatedBy { get; set; }
+
+    [FirestoreProperty]
     public DateTime CreatedDate { get; set; }
+
+    [FirestoreProperty]
     public UserHeader LastModifiedBy { get; set; }
+
+    [FirestoreProperty]
     public DateTime LastModifiedDate { get; set; }
 
     public Auditable() { }

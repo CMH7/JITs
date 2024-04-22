@@ -5,7 +5,11 @@ namespace JITs;
 
 public static class MauiProgram
 {
-    private static string CredentialPath = @"D:\Personal\Projects\JITs\wwwroot\jits-f801f-firebase-adminsdk-p7fj2-cee723cdf0.json";
+    // CMH7
+    //private static string CredentialPath = @"D:\Personal\Projects\JITs\wwwroot\jits-f801f-firebase-adminsdk-p7fj2-cee723cdf0.json";
+    
+    // TBSI-CM
+    private static string CredentialPath = @"D:\OTHERS\comms\JITs\wwwroot\jits-f801f-firebase-adminsdk-p7fj2-cee723cdf0.json";
 
     public static MauiApp CreateMauiApp()
     {

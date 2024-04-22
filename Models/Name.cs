@@ -2,10 +2,19 @@
 
 public class Name
 {
+    [FirestoreProperty]
     public string First { get; set; }
+    
+    [FirestoreProperty]
     public string Middle { get; set; }
+    
+    [FirestoreProperty]
     public string Last { get; set; }
+    
+    [FirestoreProperty]
     public string Extensions { get; set; }
+    
+    [FirestoreProperty]
     public string Full { get; set; }
 
     public static string SetFull(Name name)

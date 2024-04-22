@@ -76,41 +76,58 @@ public partial class CreateAccount
 
     private async Task Submit()
     {
-        appState.IsBusy = true;
-        Notif(NotificationSeverity.Info, "Processing", "Please wait...");
-
-        NewUser.Name.Full = Name.SetFull(NewUser.Name);
-
-        CollectionReference UsersColRef = db.GetCollectionReference("Users");
-        DocumentReference UserDocRef = await UsersColRef.AddAsync(NewUser);
-
-        if (UserDocRef is null) Notif(NotificationSeverity.Error, "Creationg failed", "There's something wrong. Please contact your developer.");
-        else
+        try
         {
-            Notif(NotificationSeverity.Success, "Success", "Account created, login now!");
-            Notif(NotificationSeverity.Info, "Processing", "Auto-logging in...");
+            appState.IsBusy = true;
+            Notif(NotificationSeverity.Info, "Processing", "Please wait...");
 
-            Query Qry = UsersColRef.WhereEqualTo("LRN", NewUser.LRN).WhereEqualTo("Password", NewUser.Password);
-            QuerySnapshot QrySnapshot = await Qry.GetSnapshotAsync();
-            bool NoData = QrySnapshot is null || QrySnapshot.Count <= 0;
+            NewUser.Name.Full = Name.SetFull(NewUser.Name);
 
-            if (NoData) Notif(NotificationSeverity.Error, "Failed", "No user found");
+            CollectionReference UsersColRef = db.GetCollectionReference("Users");
+            DocumentReference docRef = UsersColRef.Document();
+            string usernamejson = JsonConvert.SerializeObject(NewUser.Name);
+            string userclassjson = JsonConvert.SerializeObject(NewUser.Class);
+            string json = JsonConvert.SerializeObject(NewUser);
+            Dictionary<string, object> kv = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
+            kv["Name"] = JsonConvert.DeserializeObject<Dictionary<string, object>>(usernamejson);
+            kv["Class"] = JsonConvert.DeserializeObject<Dictionary<string, object>>(userclassjson);
+            WriteResult res = await docRef.SetAsync(kv);
+            //DocumentReference UserDocRef = await UsersColRef.AddAsync(NewUser);
+
+            //if (UserDocRef is null) Notif(NotificationSeverity.Error, "Creationg failed", "There's something wrong. Please contact your developer.");
+            if (res is null) Notif(NotificationSeverity.Error, "Creationg failed", "There's something wrong. Please contact your developer.");
             else
             {
-                foreach (DocumentSnapshot doc in QrySnapshot.Documents)
+                Notif(NotificationSeverity.Success, "Success", "Account created, login now!");
+                Notif(NotificationSeverity.Info, "Processing", "Auto-logging in...");
+
+                Query Qry = UsersColRef.WhereEqualTo("LRN", NewUser.LRN).WhereEqualTo("Password", NewUser.Password);
+                QuerySnapshot QrySnapshot = await Qry.GetSnapshotAsync();
+                bool NoData = QrySnapshot is null || QrySnapshot.Count <= 0;
+
+                if (NoData) Notif(NotificationSeverity.Error, "Failed", "No user found");
+                else
                 {
-                    NewUser.DocId = doc.Id;
-                    string UserJson = JsonConvert.SerializeObject(NewUser);
-                    await App.Db.InsertAsync(new SQliteUser() { UserJSON = UserJson });
+                    foreach (DocumentSnapshot doc in QrySnapshot.Documents)
+                    {
+                        NewUser.DocId = doc.Id;
+                        string UserJson = JsonConvert.SerializeObject(NewUser);
+                        await App.Db.InsertAsync(new SQliteUser() { UserJSON = UserJson });
+                    }
+                    Notif(NotificationSeverity.Success, "Success", "Welcome back!");
+                    navigationManager.NavigateTo("/home", true, true);
                 }
-                Notif(NotificationSeverity.Success, "Success", "Welcome back!");
-                navigationManager.NavigateTo("/home", true, true);
+                appState.IsBusy = false;
             }
+            await Task.Delay(4000);
+
             appState.IsBusy = false;
         }
-        await Task.Delay(4000);
-
-        appState.IsBusy = false;
+        catch (Exception ex)
+        {
+            Notif(NotificationSeverity.Error, $"{ex.Message}", $"{ex.InnerException?.Message}");
+            appState.IsBusy = false;
+        }
     }
 
     private void Login()
