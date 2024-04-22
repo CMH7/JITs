@@ -12,10 +12,10 @@ public class User
     public string Sex { get; set; }
     
     [FirestoreProperty]
-    public string Picture { get; set; }
-    
+    public string Picture { get; set; } = string.Empty;
+
     [FirestoreProperty]
-    public string Email { get; set; }
+    public string Email { get; set; } = string.Empty;
     
     [FirestoreProperty]
     public string LRN { get; set; }

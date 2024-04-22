@@ -53,6 +53,7 @@ public partial class CreateAccount
             {
                 ClassParent classparent = Converter.GetObject<ClassParent>(doc.ToDictionary());
                 ClassVM cvm = new(classparent);
+                cvm.Id = doc.Id;
                 classLevels.Add(cvm);
                 classSections.Add(cvm);
                 //string classJSON = JsonConvert.SerializeObject(classparent);
@@ -89,6 +90,7 @@ public partial class CreateAccount
             string userclassjson = JsonConvert.SerializeObject(NewUser.Class);
             string json = JsonConvert.SerializeObject(NewUser);
             Dictionary<string, object> kv = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
+            if(!kv.Remove("DocId")) Notif(NotificationSeverity.Warning, "Warning", "DocId was not removed");
             kv["Name"] = JsonConvert.DeserializeObject<Dictionary<string, object>>(usernamejson);
             kv["Class"] = JsonConvert.DeserializeObject<Dictionary<string, object>>(userclassjson);
             WriteResult res = await docRef.SetAsync(kv);

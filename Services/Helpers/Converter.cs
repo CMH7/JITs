@@ -1,4 +1,6 @@
-﻿namespace JITs.Services.Helpers;
+﻿using Newtonsoft.Json;
+
+namespace JITs.Services.Helpers;
 
 public static class Converter
 {
@@ -31,5 +33,21 @@ public static class Converter
     public static T GetObject<T>(this Dictionary<string, object> dict)
     {
         return (T)GetObject(dict, typeof(T));
+    }
+
+    public static Dictionary<string, object> UserToDict(User user)
+    {
+        var userdatadict = JsonConvert.SerializeObject(user);
+        var usernamedict = JsonConvert.SerializeObject(user.Name);
+        var userclassdict = JsonConvert.SerializeObject(user.Class);
+
+        var userdatades = JsonConvert.DeserializeObject<Dictionary<string, object>>(userdatadict);
+        var usernamedes = JsonConvert.DeserializeObject<Dictionary<string, object>>(usernamedict);
+        var userclassdes = JsonConvert.DeserializeObject<Dictionary<string, object>>(userclassdict);
+
+        userdatades["Name"] = usernamedes;
+        userdatades["Class"] = userclassdes;
+
+        return userdatades;
     }
 }
